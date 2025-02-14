@@ -7,8 +7,7 @@ class TomorrowIoWeather {
     required this.location,
   });
 
-  factory TomorrowIoWeather.fromJson(Map<String, dynamic> json) =>
-      TomorrowIoWeather(
+  factory TomorrowIoWeather.fromJson(Map<String, dynamic> json) => TomorrowIoWeather(
         timelines: Timelines.fromJson(json["timelines"]),
         location: Location.fromJson(json["location"]),
       );
@@ -59,10 +58,8 @@ class Timelines {
   });
 
   factory Timelines.fromJson(Map<String, dynamic> json) => Timelines(
-        minutely: List<MinutelyHourly>.from(
-            json["minutely"].map((x) => MinutelyHourly.fromJson(x))),
-        hourly: List<MinutelyHourly>.from(
-            json["hourly"].map((x) => MinutelyHourly.fromJson(x))),
+        minutely: List<MinutelyHourly>.from(json["minutely"].map((x) => MinutelyHourly.fromJson(x))),
+        hourly: List<MinutelyHourly>.from(json["hourly"].map((x) => MinutelyHourly.fromJson(x))),
         daily: List<Daily>.from(json["daily"].map((x) => Daily.fromJson(x))),
       );
 
@@ -83,7 +80,7 @@ class Daily {
   });
 
   factory Daily.fromJson(Map<String, dynamic> json) => Daily(
-        time: DateTime.parse(json["time"]),
+        time: DateTime.parse(json["time"]).toLocal(),
         dailyValues: DailyValues.fromJson(json["values"]),
       );
 
@@ -103,7 +100,7 @@ class MinutelyHourly {
   });
 
   factory MinutelyHourly.fromJson(Map<String, dynamic> json) => MinutelyHourly(
-        time: DateTime.parse(json["time"]),
+        time: DateTime.parse(json["time"]).toLocal(),
         minutelyHourlyValues: MinutelyHourlyValues.fromJson(json["values"]),
       );
 
@@ -506,10 +503,9 @@ class DailyValues {
         iceAccumulationMax: json["iceAccumulationMax"],
         iceAccumulationMin: json["iceAccumulationMin"],
         iceAccumulationSum: json["iceAccumulationSum"],
-        moonriseTime: DateTime.parse(json["moonriseTime"]),
-        moonsetTime: DateTime.parse(json["moonsetTime"]),
-        precipitationProbabilityAvg:
-            json["precipitationProbabilityAvg"]?.toDouble(),
+        moonriseTime: DateTime.parse(json["moonriseTime"]).toLocal(),
+        moonsetTime: DateTime.parse(json["moonsetTime"]).toLocal(),
+        precipitationProbabilityAvg: json["precipitationProbabilityAvg"]?.toDouble(),
         precipitationProbabilityMax: json["precipitationProbabilityMax"],
         precipitationProbabilityMin: json["precipitationProbabilityMin"],
         pressureSeaLevelAvg: json["pressureSeaLevelAvg"],
@@ -549,8 +545,8 @@ class DailyValues {
         snowIntensityAvg: json["snowIntensityAvg"],
         snowIntensityMax: json["snowIntensityMax"],
         snowIntensityMin: json["snowIntensityMin"],
-        sunriseTime: DateTime.parse(json["sunriseTime"]),
-        sunsetTime: DateTime.parse(json["sunsetTime"]),
+        sunriseTime: DateTime.parse(json["sunriseTime"]).toLocal(),
+        sunsetTime: DateTime.parse(json["sunsetTime"]).toLocal(),
         temperatureApparentAvg: json["temperatureApparentAvg"]?.toDouble(),
         temperatureApparentMax: json["temperatureApparentMax"]?.toDouble(),
         temperatureApparentMin: json["temperatureApparentMin"]?.toDouble(),
