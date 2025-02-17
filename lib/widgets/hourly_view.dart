@@ -17,7 +17,7 @@ class HourlyView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              height: (MediaQuery.of(context).size.height / 2 - 200),
+              height: (MediaQuery.of(context).size.height / 2 - 150),
               child: Stack(
                 children: [
                   Align(
@@ -57,7 +57,7 @@ class HourlyView extends StatelessWidget {
                         color: Colors.white70,
                       ),
                       Text(
-                        "${minutelyHourly.minutelyHourlyValues.windSpeed}",
+                        "${minutelyHourly.minutelyHourlyValues.windSpeed}km/h",
                         style: TextStyle(color: Colors.grey.shade50),
                       ),
                       Text(
