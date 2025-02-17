@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:smokeless_weather/models/tommorrow_io_weather_model.dart';
 import 'package:smokeless_weather/utils/get_weather_image_name.dart';
+import 'package:smokeless_weather/widgets/daily_view.dart';
+import 'package:smokeless_weather/widgets/hourly_view.dart';
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   late Future<TomorrowIoWeather> futureWeather;
+  MinutelyHourly? selectedHour;
+  Daily? selectedDay;
 
   String shortName(Location location) {
     List<String> nameParts = location.name.split(",");
@@ -92,105 +96,23 @@ class _OverviewPageState extends State<OverviewPage> {
                   Flexible(
                     flex: 1,
                     child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.lightBlue.shade200,
-                            Colors.lightBlue,
-                          ],
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.lightBlue.shade200,
+                              Colors.lightBlue,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(MediaQuery.of(context).size.width / 8),
+                            bottomRight: Radius.circular(MediaQuery.of(context).size.width / 8),
+                          ),
                         ),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(MediaQuery.of(context).size.width / 8),
-                          bottomRight: Radius.circular(MediaQuery.of(context).size.width / 8),
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              child: Stack(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Mostly sunny",
-                                        style: TextStyle(color: Colors.white54),
-                                      ),
-                                      Text(
-                                        "24\u00B0",
-                                        style:
-                                            TextStyle(color: Colors.white, fontSize: 60, fontWeight: FontWeight.w400),
-                                      ),
-                                    ],
-                                  ),
-                                  Image.asset(
-                                    "assets/img/weather_icons/51160_flurries_partly_cloudy_large@2x.png",
-                                    width: MediaQuery.of(context).size.width / 2,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    Icon(
-                                      MdiIcons.weatherWindy,
-                                      color: Colors.white70,
-                                    ),
-                                    Text(
-                                      "9km/hr",
-                                      style: TextStyle(color: Colors.grey.shade50),
-                                    ),
-                                    Text(
-                                      "Wind",
-                                      style: TextStyle(color: Colors.white54),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      MdiIcons.waterPercent,
-                                      color: Colors.white60,
-                                    ),
-                                    Text(
-                                      "25%",
-                                      style: TextStyle(color: Colors.grey.shade50),
-                                    ),
-                                    Text(
-                                      "Humidity",
-                                      style: TextStyle(color: Colors.white70),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Icon(
-                                      Icons.visibility,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      "1.7km",
-                                      style: TextStyle(color: Colors.grey.shade50),
-                                    ),
-                                    Text(
-                                      "visibility",
-                                      style: TextStyle(color: Colors.white54),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                        child: selectedDay == null
+                            ? DailyView(daily: selectedDay ?? weatherData.timelines.daily.first)
+                            : HourlyView(minutelyHourly: selectedHour ?? weatherData.timelines.hourly.first)),
                   ),
                   Flexible(
                     flex: 1,
@@ -235,17 +157,21 @@ class _OverviewPageState extends State<OverviewPage> {
                                     style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
                                     onPressed: () {
                                       log("Press hour column at time ${e.time.hour}");
+                                      setState(() {
+                                        selectedHour = e;
+                                        selectedDay = null;
+                                      });
                                     },
                                     child: Container(
                                       height: 120,
                                       width: 70,
                                       margin: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.black, // Background color
-                                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(15),
                                         border: Border.all(
-                                          color: Colors.white, // Border color
-                                          width: 2, // Border width
+                                          color: Colors.white,
+                                          width: 2,
                                         ),
                                       ),
                                       child: Column(
@@ -281,7 +207,7 @@ class _OverviewPageState extends State<OverviewPage> {
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                  "Daily",
+                                  "This week",
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -292,7 +218,7 @@ class _OverviewPageState extends State<OverviewPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 130,
+                    height: 170,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -301,6 +227,10 @@ class _OverviewPageState extends State<OverviewPage> {
                             style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
                             onPressed: () {
                               log("Press column for ${DateFormat.E().format(e.time)}");
+                              setState(() {
+                                selectedHour = null;
+                                selectedDay = e;
+                              });
                             },
                             child: Container(
                               height: 120,
