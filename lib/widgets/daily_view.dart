@@ -31,7 +31,7 @@ class DailyView extends StatelessWidget {
                     alignment: Alignment(0, -0.5),
                     child: Text(
                       "${daily.dailyValues.temperatureApparentAvg}\u00B0",
-                      style: TextStyle(color: Colors.white, fontSize: 60, fontWeight: FontWeight.w400),
+                      style: TextStyle(color: Colors.white, fontSize: 50, fontWeight: FontWeight.w400),
                     ),
                   ),
                   Align(
@@ -39,7 +39,7 @@ class DailyView extends StatelessWidget {
                     child: Image.asset(
                       "assets/img/weather_icons/${getWeatherImgName(daily.dailyValues.weatherCodeMax)}@2x.png",
                       fit: BoxFit.cover,
-                      scale: 0.75,
+                      scale: 1,
                     ),
                   ),
                 ],

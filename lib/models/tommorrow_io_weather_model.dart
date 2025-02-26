@@ -290,8 +290,8 @@ class DailyValues {
   int iceAccumulationMax;
   int iceAccumulationMin;
   int iceAccumulationSum;
-  DateTime moonriseTime;
-  DateTime moonsetTime;
+  DateTime? moonriseTime; //Todo 1
+  DateTime? moonsetTime; //Todo 2
   double precipitationProbabilityAvg;
   int precipitationProbabilityMax;
   int precipitationProbabilityMin;
@@ -396,8 +396,8 @@ class DailyValues {
     required this.iceAccumulationMax,
     required this.iceAccumulationMin,
     required this.iceAccumulationSum,
-    required this.moonriseTime,
-    required this.moonsetTime,
+    this.moonriseTime, //Todo 3
+    this.moonsetTime, //Todo 4
     required this.precipitationProbabilityAvg,
     required this.precipitationProbabilityMax,
     required this.precipitationProbabilityMin,
@@ -503,8 +503,8 @@ class DailyValues {
         iceAccumulationMax: json["iceAccumulationMax"],
         iceAccumulationMin: json["iceAccumulationMin"],
         iceAccumulationSum: json["iceAccumulationSum"],
-        moonriseTime: DateTime.parse(json["moonriseTime"]).toLocal(),
-        moonsetTime: DateTime.parse(json["moonsetTime"]).toLocal(),
+        moonriseTime: json["moonriseTime"] == null ? null : DateTime.parse(json["moonriseTime"]).toLocal(), //Todo 5
+        moonsetTime: json["moonsetTime"] == null ? null : DateTime.parse(json["moonsetTime"]).toLocal(), //Todo 6
         precipitationProbabilityAvg: json["precipitationProbabilityAvg"]?.toDouble(),
         precipitationProbabilityMax: json["precipitationProbabilityMax"],
         precipitationProbabilityMin: json["precipitationProbabilityMin"],
@@ -610,8 +610,8 @@ class DailyValues {
         "iceAccumulationMax": iceAccumulationMax,
         "iceAccumulationMin": iceAccumulationMin,
         "iceAccumulationSum": iceAccumulationSum,
-        "moonriseTime": moonriseTime.toIso8601String(),
-        "moonsetTime": moonsetTime.toIso8601String(),
+        "moonriseTime": moonriseTime?.toIso8601String(), //Todo 7
+        "moonsetTime": moonsetTime?.toIso8601String(), //Todo 8
         "precipitationProbabilityAvg": precipitationProbabilityAvg,
         "precipitationProbabilityMax": precipitationProbabilityMax,
         "precipitationProbabilityMin": precipitationProbabilityMin,
